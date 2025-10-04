@@ -1,0 +1,500 @@
+LastWish v1 — Top‑Down Build Plan + Next.js
+Skeleton
+0) Goal and Constraints
+• Goal: Ship a privacy‑first estate‑planning web app that lets users list assets, assign beneficiaries,
+generate printable documents, and trigger automations.
+• Constraints:
+• Next.js on Netlify. No SSR. Static pages + client components.
+• Secrets kept in Netlify Functions via env vars. Client calls functions for data that needs keys.
+• Integrate n8n and NLWeb per attached guides for automation and natural‑language access.
+1) Feature Tree (Top‑Down)
+• Core Flow
+• Onboarding → Owner profile → Wallets → Asset load → Beneficiaries → Assignments → Payment →
+Generate & Print
+• Data & Storage
+• Client state in Zustand; persistence in localStorage and optional export to JSON/IPFS.
+• Integrations
+• Wallet connect (wagmi + RainbowKit)
+• ENS resolve (Netlify Function → Alchemy/Infura)
+• Asset fetch (Netlify Function → Covalent/Alchemy)
+• n8n webhooks for notifications, compliance checks, and content refresh
+• Optional IPFS pin (web3.storage) via Netlify Function
+• Docs
+• Client‑side PDF generation (react‑pdf) for: Last Will, Letter of Intent, Asset List, Access Instructions
+• Payments
+• Crypto payment widget (user signs and sends to a configured address)
+• Optional Stripe Link (Netlify Function, no keys in client)
+2) Architecture
+Next.js (App Router, static) Client-only state, forms, PDF
+│
+├─ Netlify Functions (edge/runtime)
+│ ├─ /api/ens-resolve → Alchemy/Infura
+│ ├─ /api/assets → Covalent/Alchemy
+│ ├─ /api/ipfs-pin → web3.storage
+│ ├─ /api/payment/verify → Alchemy/Etherscan
+│ └─ /api/n8n/notify → n8n webhook(s)
+1
+
+
+--- PAGE 1 ---
+
+│
+└─ n8n ⇄ NLWeb (per guides) for monitoring, content updates, alerts
+3) Data Model (TypeScript)
+export type Owner = {
+fullName: string;
+primaryWallet?: string;
+specialInstructions?: string;
+};
+export type Wallet = { id: string; address: string; ens?: string };
+export type TokenAsset = {
+chainId: number; address: string; symbol: string; decimals: number; balance:
+string;
+};
+export type NFTAsset = {
+chainId: number; contract: string; tokenId: string; collection?: string;
+name?: string;
+};
+export type Beneficiary = {
+id: string; name: string; addressOrEns?: string; email?: string;
+relationship?: string;
+};
+export type Assignment = {
+assetKey: string; // e.g., "erc20:1:0x..." or "nft:1:0x...:1234"
+splits: Array<{ beneficiaryId: string; pct: number }>; // validate to 100
+};
+export type LastWishState = {
+owner: Owner; wallets: Wallet[]; tokens: TokenAsset[]; nfts: NFTAsset[];
+beneficiaries: Beneficiary[]; assignments: Assignment[]; payment?: { txHash?:
+string };
+};
+4) API Map (Netlify Functions)
+• GET /api/ens-resolve?name= → { address }
+• GET /api/assets?address=0x..&chains=1,137 → { tokens, nfts }
+• POST /api/ipfs-pin body { json } → { cid }
+• POST /api/payment/verify body { txHash } → { confirmed, block, amount }
+2
+
+
+--- PAGE 2 ---
+
+• POST /api/n8n/notify body { event, payload } → 202
+Env vars: ALCHEMY_KEY COVALENT_KEY WEB3_STORAGE_TOKEN N8N_WEBHOOK_URL
+ETHERSCAN_KEY PAYMENT_RECEIVER
+5) Security
+• All keys only in Functions. CORS restrict origins to production domain. Rate limit.
+• Do not write PII to third‑party APIs. Only derived data.
+• Offer local‑only mode with no network calls beyond public RPC.
+6) n8n × NLWeb Hooks (from docs)
+• Compliance monitor: nightly n8n cron → legal sources → NLWeb semantic diff → raise issue via /
+api/n8n/notify .
+• User progress: on doc.generated event send metrics + optional email.
+• Content refresh: n8n pulls updated FAQs into JSON which the client fetches anonymously from a
+CDN.
+7) Milestones
+1. Scaffold & UX shell: routes, layout, wallet connect, forms, local persistence
+2. Functions: ens, assets, n8n notify
+3. Assignments matrix + validation
+4. Payment widget + verify
+5. PDF generator
+6. IPFS export + n8n ops hooks
+7. Polish + deploy
+Next.js Project Skeleton (Netlify, no SSR)
+A) package.json (key deps)
+{
+"name": "lastwish",
+"private": true,
+"scripts": {
+"dev": "next dev",
+"build": "next build",
+"start": "next start"
+},
+"dependencies": {
+"next": "14.2.5",
+"react": "18.3.1",
+3
+
+
+--- PAGE 3 ---
+
+"react-dom": "18.3.1",
+"zustand": "4.5.2",
+"lucide-react": "^0.453.0",
+"@tanstack/react-table": "^8.19.2",
+"@rainbow-me/rainbowkit": "^2.1.3",
+"wagmi": "^2.12.17",
+"viem": "^2.21.3",
+"react-hook-form": "^7.53.0",
+"zod": "^3.23.8",
+"@react-pdf/renderer": "^4.2.0",
+"clsx": "^2.1.1"
+}
+}
+B) next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = { reactStrictMode: true, experimental: { typedRoutes:
+true } };
+module.exports = nextConfig;
+C) app/layout.tsx
+import './globals.css';
+export const metadata = { title: 'LastWish', description: 'Estate planning for
+digital assets' };
+export default function RootLayout({ children }: { children: React.ReactNode })
+{
+return (
+<html lang="en"><body className="min-h-screen bg-neutral-50 text-
+neutral-900">
+<div className="mx-auto max-w-6xl p-4">
+<header className="flex items-center justify-between py-4">
+<div className="flex items-center gap-3">
+<img src="/logo.png" alt="LastWish" className="h-10 w-10"/>
+<h1 className="text-2xl font-semibold">LastWish</h1>
+</div>
+<nav className="text-sm flex gap-4">
+<a href="/" className="hover:underline">Home</a>
+<a href="/onboarding" className="hover:underline">Start</a>
+<a href="/generate" className="hover:underline">Generate</a>
+</nav>
+</header>
+<main>{children}</main>
+4
+
+
+--- PAGE 4 ---
+
+</div>
+</body></html>
+);
+}
+D) app/page.tsx (Home)
+export default function Page() {
+return (
+<section className="grid gap-6 md:grid-cols-2">
+<div className="space-y-4">
+<h2 className="text-3xl font-bold">Plan your digital legacy</h2>
+<p>Create beneficiary assignments for tokens and NFTs, then generate
+printable documents.</p>
+<div className="flex gap-3">
+<a className="px-4 py-2 rounded-xl border" href="/onboarding">Start</
+a>
+<a className="px-4 py-2 rounded-xl border" href="/docs">Docs</a>
+</div>
+</div>
+<div className="rounded-2xl border p-4">
+<ol className="list-decimal pl-6 space-y-1">
+<li>Owner info</li>
+<li>Connect wallet</li>
+<li>Load assets</li>
+<li>Add beneficiaries</li>
+<li>Assign percentages</li>
+<li>Pay and generate</li>
+</ol>
+</div>
+</section>
+);
+}
+E) app/onboarding/page.tsx
+'use client';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useStore } from '@/lib/store';
+const schema = z.object({
+fullName: z.string().min(2),
+5
+
+
+--- PAGE 5 ---
+
+primaryWallet: z.string().optional(),
+specialInstructions: z.string().optional(),
+});
+type FormData = z.infer<typeof schema>;
+export default function Onboarding() {
+const { state, setOwner } = useStore();
+const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+resolver: zodResolver(schema), defaultValues: state.owner });
+const onSubmit = (data: FormData) => setOwner(data);
+return (
+<form className="grid gap-3 max-w-xl" onSubmit={handleSubmit(onSubmit)}>
+<label className="grid gap-1">
+<span>Full Legal Name *</span>
+<input className="border rounded px-3 py-2" {...register('fullName')} />
+{errors.fullName && <em className="text-red-600 text-sm">Required</em>}
+</label>
+<label className="grid gap-1">
+<span>Primary Wallet Address</span>
+<input className="border rounded px-3 py-2"
+{...register('primaryWallet')} />
+</label>
+<label className="grid gap-1">
+<span>Special Instructions (optional)</span>
+<textarea className="border rounded px-3 py-2" rows={4}
+{...register('specialInstructions')} />
+</label>
+<button className="mt-2 px-4 py-2 rounded-xl border w-max">Save &
+Continue</button>
+</form>
+);
+}
+F) app/wallets/page.tsx (connect + list)
+'use client';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { injected } from 'wagmi/connectors';
+export default function Wallets() {
+const { address, chainId, isConnected } = useAccount();
+const { connect, connectors } = useConnect();
+const { disconnect } = useDisconnect();
+return (
+<div className="space-y-3">
+6
+
+
+--- PAGE 6 ---
+
+<h2 className="text-xl font-semibold">Wallet</h2>
+<div className="flex gap-2 items-center">
+{isConnected ? (
+<>
+<span>Account: {address}</span>
+<span>Chain: {chainId}</span>
+<button className="border rounded px-3 py-1" onClick={() =>
+disconnect()}>Disconnect</button>
+</>
+) : (
+<button className="border rounded px-3 py-1" onClick={() => connect({
+connector: injected() })}>Connect</button>
+)}
+</div>
+</div>
+);
+}
+G) app/assets/page.tsx (load)
+'use client';
+import { useState } from 'react';
+import { useStore } from '@/lib/store';
+export default function Assets() {
+const { state, setTokens, setNfts } = useStore();
+const [loading, setLoading] = useState(false);
+const loadAssets = async () => {
+if (!state.owner.primaryWallet) return;
+setLoading(true);
+const r = await fetch(`/api/assets?address=${state.owner.primaryWallet}`);
+const data = await r.json();
+setTokens(data.tokens || []);
+setNfts(data.nfts || []);
+setLoading(false);
+};
+return (
+<div className="space-y-3">
+<button className="border rounded px-3 py-1" onClick={loadAssets}
+disabled={loading}>
+{loading ? 'Loading…' : 'Load Assets'}
+</button>
+<pre className="text-xs bg-neutral-100 p-3 rounded max-h-80 overflow-
+auto">{JSON.stringify({ tokens: state.tokens.length, nfts: state.nfts.length },
+null, 2)}</pre>
+</div>
+7
+
+
+--- PAGE 7 ---
+
+);
+}
+H) app/beneficiaries/page.tsx
+'use client';
+import { useStore } from '@/lib/store';
+import { useState } from 'react';
+export default function Beneficiaries() {
+const { state, addBeneficiary, removeBeneficiary } = useStore();
+const [name, setName] = useState('');
+const [who, setWho] = useState('');
+return (
+<div className="space-y-3">
+<div className="flex gap-2">
+<input className="border rounded px-3 py-2" placeholder="Name"
+value={name} onChange={e=>setName(e.target.value)} />
+<input className="border rounded px-3 py-2" placeholder="Wallet or ENS"
+value={who} onChange={e=>setWho(e.target.value)} />
+<button className="border rounded px-3 py-2" onClick={()=>{ if(name)
+{addBeneficiary({ name, addressOrEns: who }); setName(''); setWho('');}}}>Add</
+button>
+</div>
+<ul className="list-disc pl-6">
+{state.beneficiaries.map(b => (
+<li key={b.id} className="flex items-center justify-between gap-2">
+<span>{b.name} — {b.addressOrEns || 'N/A'}</span>
+<button className="text-sm border rounded px-2 py-1"
+onClick={()=>removeBeneficiary(b.id)}>Remove</button>
+</li>
+))}
+</ul>
+</div>
+);
+}
+I) app/generate/page.tsx (PDF)
+'use client';
+import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-
+pdf/renderer';
+import { useStore } from '@/lib/store';
+8
+
+
+--- PAGE 8 ---
+
+const styles = StyleSheet.create({ page: { padding: 32 }, h1: { fontSize: 18,
+marginBottom: 12 }, p: { fontSize: 12, marginBottom: 6 } });
+function WillDoc() {
+const { state } = useStore();
+return (
+<Document>
+<Page size="A4" style={styles.page}>
+<Text style={styles.h1}>Last Will and Testament</Text>
+<Text style={styles.p}>Testator: {state.owner.fullName}</Text>
+<Text style={styles.p}>Special Instructions:
+{state.owner.specialInstructions || 'None'}</Text>
+<Text style={styles.h1}>Beneficiaries</Text>
+{state.beneficiaries.map(b => (
+<Text key={b.id} style={styles.p}>• {b.name} — {b.addressOrEns || 'N/
+A'}</Text>
+))}
+<Text style={styles.h1}>Assignments</Text>
+{state.assignments.map(a => (
+<Text key={a.assetKey} style={styles.p}>{a.assetKey}:
+{a.splits.map(s=>`${s.beneficiaryId}:${s.pct}%`).join(', ')}</Text>
+))}
+</Page>
+</Document>
+);
+}
+export default function Generate() {
+return (
+<div className="space-y-3">
+<PDFDownloadLink document={<WillDoc/>} fileName="lastwish-will.pdf"
+className="border rounded px-3 py-2">Generate & Download PDF</PDFDownloadLink>
+</div>
+);
+}
+J) lib/store.ts (Zustand + localStorage)
+'use client';
+import { create } from 'zustand';
+import { nanoid } from 'nanoid';
+import type { Owner, Wallet, TokenAsset, NFTAsset, Beneficiary, Assignment,
+LastWishState } from './types';
+const defaultState: LastWishState = { owner: { fullName: '' }, wallets: [],
+tokens: [], nfts: [], beneficiaries: [], assignments: [] };
+9
+
+
+--- PAGE 9 ---
+
+function load(): LastWishState { try { return
+JSON.parse(localStorage.getItem('lastwish')||''); } catch { return
+defaultState; } }
+function save(s: LastWishState) { localStorage.setItem('lastwish',
+JSON.stringify(s)); }
+export const useStore = create<{ state: LastWishState; setOwner: (o:
+Partial<Owner>)=>void; addBeneficiary: (b: Partial<Beneficiary>)=>void;
+removeBeneficiary:(id:string)=>void; setTokens:(t:TokenAsset[])=>void; setNfts:
+(n:NFTAsset[])=>void; }>((set, get) => ({
+state: typeof window !== 'undefined' ? load() : defaultState,
+setOwner: (o) => set(s => { const ns = { ...s.state, owner:
+{ ...s.state.owner, ...o } }; save(ns); return { state: ns }; }),
+addBeneficiary: (b) => set(s => { const nb: Beneficiary = { id: nanoid(),
+name: b.name||'Unnamed', addressOrEns: b.addressOrEns }; const ns={...s.state,
+beneficiaries:[...s.state.beneficiaries, nb]}; save(ns); return { state:
+ns }; }),
+removeBeneficiary: (id) => set(s => { const ns={...s.state,
+beneficiaries:s.state.beneficiaries.filter(x=>x.id!==id)}; save(ns); return {
+state: ns }; }),
+setTokens: (t) => set(s => { const ns={...s.state, tokens:t}; save(ns);
+return { state: ns }; }),
+setNfts: (n) => set(s => { const ns={...s.state, nfts:n}; save(ns); return {
+state: ns }; }),
+}));
+K) Netlify Functions (TypeScript)
+netlify/functions/ens-resolve.ts
+import type { Handler } from '@netlify/functions';
+const ALCHEMY_KEY = process.env.ALCHEMY_KEY!;
+export const handler: Handler = async (event) => {
+const name = event.queryStringParameters?.name;
+if (!name) return { statusCode: 400, body: 'name required' };
+// Minimal resolver using Alchemy Name Service endpoint (or viem + RPC)
+const url = `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`;
+const body = { jsonrpc: '2.0', id: 1, method: 'alchemy_resolveName', params:
+[name] };
+const r = await fetch(url, { method: 'POST', headers: { 'content-type':
+'application/json' }, body: JSON.stringify(body) });
+const j = await r.json();
+return { statusCode: 200, body: JSON.stringify({ address: j.result }) };
+};
+10
+
+
+--- PAGE 10 ---
+
+netlify/functions/assets.ts
+import type { Handler } from '@netlify/functions';
+const COVALENT_KEY = process.env.COVALENT_KEY!;
+export const handler: Handler = async (event) => {
+const address = event.queryStringParameters?.address;
+if (!address) return { statusCode: 400, body: 'address required' };
+const url = `https://api.covalenthq.com/v1/eth-mainnet/address/${address}/
+balances_v2/?nft=true&key=${COVALENT_KEY}`;
+const r = await fetch(url);
+const j = await r.json();
+const tokens = (j.data?.items||
+[]).filter((x:any)=>x.type==='cryptocurrency').map((x:any)=>({
+chainId: 1, address: x.contract_address, symbol: x.contract_ticker_symbol,
+decimals: x.contract_decimals, balance: x.balance
+}));
+const nfts = (j.data?.items||
+[]).filter((x:any)=>x.type==='nft').flatMap((x:any)=> (x.nft_data||
+[]).map((n:any)=>({
+chainId: 1, contract: x.contract_address, tokenId: n.token_id, collection:
+x.contract_name, name: n.external_data?.name
+})));
+return { statusCode: 200, body: JSON.stringify({ tokens, nfts }) };
+};
+netlify/functions/payment-verify.ts
+import type { Handler } from '@netlify/functions';
+const ETHERSCAN_KEY = process.env.ETHERSCAN_KEY!;
+const RECEIVER = (process.env.PAYMENT_RECEIVER||'').toLowerCase();
+export const handler: Handler = async (event) => {
+const { txHash } = JSON.parse(event.body||'{}');
+if (!txHash) return { statusCode: 400, body: 'txHash required' };
+const url = `https://api.etherscan.io/api?
+module=proxy&action=eth_getTransactionByHash&txhash=${txHash}&apikey=$
+{ETHERSCAN_KEY}`;
+const r = await fetch(url);
+const j = await r.json();
+const to = (j.result?.to||'').toLowerCase();
+const ok = to === RECEIVER;
+return { statusCode: 200, body: JSON.stringify({ confirmed: !!j.result && ok,
+to }) };
+};
+11
+
+
+--- PAGE 11 ---
+
+netlify/functions/n8n-notify.ts
+import type { Handler } from '@netlify/functions';
+const N8N = process.env.N8N_WEBHOOK_URL!;
+export const handler: Handler = async (event) => {
+const payload = JSON.parse(event.body||'{}');
+await fetch(N8N, { method: 'POST', headers: { 'content-type': 'application/
+json' }, body: JSON.stringify(payload) });
+return { statusCode: 202, body: '' };
+};
+L) Netlify config
+netlify.toml
+[build]
+command = "npm run build"
+publish = ".next"
+[[edge_functions]]
+path = "/api/*"
+function = "server"
+(Adjust per your Funct
+(Content truncated due to size limit. Use page ranges or line ranges to read remaining content)
