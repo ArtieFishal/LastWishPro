@@ -16,8 +16,7 @@ import {
   AlertTriangle,
   CheckCircle,
   Eye,
-  EyeOff,
-  Search
+  EyeOff
 } from 'lucide-react'
 import { useWeb3 } from '@/contexts/Web3Context'
 import { useWallet } from '@/contexts/WalletContext'
@@ -54,25 +53,12 @@ export function WalletsPage() {
     percentage: 100
   })
 
-  const [selectedNetworks, setSelectedNetworks] = useState(Object.values(BLOCKCHAIN_NETWORKS).map(n => n.id))
-
-  // Handle network selection
-  const handleNetworkSelect = (networkId) => {
-    setSelectedNetworks(prev =>
-      prev.includes(networkId)
-        ? prev.filter(id => id !== networkId)
-        : [...prev, networkId]
-    )
-  }
-
-  // Handle fetching assets
-  const handleFetchAssets = () => {
+  // Load assets for connected wallets
+  useEffect(() => {
     if (selectedWallet) {
-      fetchWalletAssets(selectedWallet.address, selectedNetworks)
-    } else {
-      toast.error('Please connect a wallet first.')
+      fetchWalletAssets(selectedWallet.address)
     }
-  }
+  }, [selectedWallet, fetchWalletAssets])
 
   // Handle wallet connection
   const handleConnectWallet = async (walletType) => {
@@ -168,43 +154,6 @@ export function WalletsPage() {
           </Button>
         </div>
       </div>
-
-      {/* Asset Discovery */}
-      <Card className="bg-gray-900 border-gray-800">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <Search className="h-5 w-5" />
-            Asset Discovery
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div>
-              <Label className="text-gray-400">Select Blockchains to Scan</Label>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {Object.values(BLOCKCHAIN_NETWORKS).map(network => (
-                  <Button
-                    key={network.id}
-                    variant={selectedNetworks.includes(network.id) ? 'secondary' : 'outline'}
-                    onClick={() => handleNetworkSelect(network.id)}
-                    className="border-gray-600"
-                  >
-                    {network.name}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <Button
-              onClick={handleFetchAssets}
-              disabled={isLoading || !selectedWallet}
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-              Scan for Assets
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Connection Status */}
       <Card className="bg-gray-900 border-gray-800">
@@ -346,22 +295,19 @@ export function WalletsPage() {
                             walletAssets.map((asset) => (
                               <div key={asset.id} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
                                 <div className="flex items-center gap-3">
-                                  <img src={asset.icon} alt={asset.name} className="h-8 w-8 rounded-full" />
+                                  <div className="text-2xl">
+                                    {ASSET_TYPES[asset.type]?.icon || '💎'}
+                                  </div>
                                   <div>
                                     <p className="text-white font-medium">{asset.name}</p>
                                     <p className="text-gray-400 text-sm">{asset.symbol}</p>
                                   </div>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                  <Badge variant="outline" className="border-gray-600 text-gray-300">
-                                    {asset.network.name}
-                                  </Badge>
-                                  <div className="text-right">
-                                    <p className="text-white">{formatBalance(asset.balance)}</p>
-                                    <p className="text-gray-400 text-sm">
-                                      ${asset.balanceUSD?.toFixed(2) || '0.00'}
-                                    </p>
-                                  </div>
+                                <div className="text-right">
+                                  <p className="text-white">{formatBalance(asset.balance)}</p>
+                                  <p className="text-gray-400 text-sm">
+                                    ${asset.usdValue?.toFixed(2) || '0.00'}
+                                  </p>
                                 </div>
                               </div>
                             ))
