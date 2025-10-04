@@ -1,0 +1,227 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LastWish.eth — the decentralized solution</title>
+  <meta name="description" content="LastWish.eth — the decentralized solution" />
+  <style>
+    /* X.com Dark Mode Theme */
+    :root{
+      --bg: #000000;
+      --card-bg: #16181c;
+      --border: #2f3336;
+      --text: #e7e9ea;
+      --text-muted: #71767b;
+      --blue: #1d9bf0;
+      --green: #00ba7c;
+      --red: #f4212e;
+      --purple: #7856ff;
+      --hover: #1e2328;
+    }
+    
+    *{box-sizing:border-box} 
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+    
+    header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);backdrop-filter:saturate(1.2) blur(4px);z-index:20}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .row{display:flex;align-items:center;gap:12px}
+    .grow{margin-left:auto}
+    .badge{font-size:12px;padding:4px 8px;border-radius:999px;background:var(--green);color:#000}
+    h1{margin:0;font-size:20px;color:var(--text)} .tag{margin:0;color:var(--text-muted);font-size:12px}
+    h2{color:var(--text);margin:0 0 8px 0}
+    
+    main{max-width:1100px;margin:0 auto;padding:20px 16px}
+    .card{background:var(--card-bg);border-radius:16px;border:1px solid var(--border);padding:20px;margin-top:16px}
+    
+    .btn{border:0;border-radius:9999px;padding:10px 20px;font-weight:600;cursor:pointer;transition:all 0.2s ease;font-size:14px}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+    
+    .btn-connect{background:var(--blue);color:#fff}
+    .btn-connect:hover{background:#1a8cd8}
+    .btn-pay{background:var(--green);color:#fff}
+    .btn-pay:hover{background:#00a86b}
+    .btn-print{background:var(--purple);color:#fff}
+    .btn-print:hover{background:#6b46e5}
+    
+    /* Secondary buttons */
+    .btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
+    .btn-secondary:hover{background:var(--hover)}
+    
+    /* Danger buttons */
+    .btn-danger{background:var(--red);color:#fff}
+    .btn-danger:hover{background:#dc1a28}
+    
+    a{color:var(--blue)}
+    .small{font-size:12px;color:var(--text-muted)}
+    .label{font-size:12px;color:var(--text);font-weight:600;margin-bottom:4px}
+    .hidden{display:none}
+    .mt4{margin-top:4px} .mt8{margin-top:8px} .mt12{margin-top:12px} .mt16{margin-top:16px} .mt24{margin-top:24px}
+    
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:12px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+    th{color:var(--text);font-weight:600;background:var(--hover)}
+    tr:hover{background:var(--hover)}
+    
+    input[type="text"], input[type="email"], select{
+      width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);
+      background:var(--bg);color:var(--text);font-size:14px;
+      transition:border-color 0.2s ease, box-shadow 0.2s ease
+    }
+    input[type="text"]:focus, input[type="email"]:focus, select:focus{
+      outline:none;border-color:var(--blue);box-shadow:0 0 0 2px rgba(29,155,240,0.2)
+    }
+    
+    .pill{display:inline-block;padding:4px 12px;border-radius:999px;background:var(--hover);color:var(--text);font-size:12px;font-weight:500}
+    .right{text-align:right}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .muted{color:var(--text-muted)}
+    .ens{font-size:12px;background:var(--blue);color:#fff;padding:4px 8px;border-radius:999px;font-weight:500}
+    .strike{text-decoration:line-through;color:var(--text-muted);margin-left:6px;font-size:12px}
+    .danger{color:var(--red)}.ok{color:var(--green)}
+    
+    /* Assignments styling */
+    .assignments{margin-top:8px}
+    .assignments .row{margin-bottom:8px}
+    .assignments select, .assignments input{margin-right:8px}
+    .assignments button{padding:6px 12px;font-size:12px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap row">
+      <div>
+        <h1>LastWish.eth</h1>
+        <p class="tag">"the decentralized solution"</p>
+      </div>
+      <div class="grow row">
+        <button id="btnResetApp" class="btn btn-secondary">Reset App</button>
+        <span id="envBadge" class="badge">Ethereum Mainnet</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Owner Information</h2>
+      <p class="small mt8">Enter your full legal name and any special instructions for your will.</p>
+      <div class="grid-2 mt12">
+        <div><div class="label">Full Legal Name *</div><input id="ownerName" type="text" placeholder="John Smith" style="background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;width:100%"></div>
+        <div><div class="label">Primary Wallet Address</div><input id="primaryWallet" type="text" placeholder="Connected wallet will appear here" readonly style="background:var(--hover);border:1px solid var(--border);color:var(--text-muted);padding:10px;border-radius:8px;width:100%"></div>
+      </div>
+      <div class="mt12">
+        <div class="label">Special Instructions (optional)</div>
+        <textarea id="specialInstructions" placeholder="Enter any special instructions for your executor regarding the management and distribution of your digital assets..." style="background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;width:100%;min-height:80px;resize:vertical;font-family:inherit"></textarea>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Beneficiaries</h2>
+      <p class="small mt8">Wallet is optional — you can enter an ENS like <em>alice.eth</em> and we'll resolve it.</p>
+      <div class="grid-3 mt12">
+        <div><div class="label">Name *</div><input id="bName" type="text" placeholder="Jane Doe"></div>
+        <div><div class="label">Wallet or ENS (optional)</div><input id="bAddressOrEns" type="text" placeholder="0x... or alice.eth"></div>
+        <div><div class="label">Email (optional)</div><input id="bEmail" type="email" placeholder="jane@example.com"></div>
+      </div>
+      <div class="grid-2 mt8">
+        <div><div class="label">Relationship (optional)</div><input id="bRelation" type="text" placeholder="Spouse, Child, Executor"></div>
+        <div class="right"><button id="btnAddBeneficiary" class="btn btn-connect" style="margin-top:18px">Add Beneficiary</button></div>
+      </div>
+      <div class="mt12">
+        <table id="tblBeneficiaries">
+          <thead><tr><th>Name</th><th>Address</th><th>ENS</th><th>Email</th><th>Relationship</th><th class="right">Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Wallet</h2>
+      <p class="small mt8">Connect, sign a session (off‑chain), or disconnect. Reset App clears local data.</p>
+      <div class="row mt8">
+        <button id="btnConnect" class="btn btn-connect">Connect</button>
+        <button id="btnSign" class="btn btn-secondary" disabled>Sign Session</button>
+        <button id="btnDisconnect" class="btn btn-danger" disabled>Disconnect</button>
+        <div id="connStatus" class="small">Not connected</div>
+      </div>
+      <div id="accountInfo" class="small hidden" style="margin-top:8px">
+        <div>Account: <span id="acct"></span> <span id="acctEns" class="ens hidden"></span></div>
+        <div>Chain: <span id="chain"></span></div>
+        <div id="sigStatus" class="small"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Additional Wallets</h2>
+      <p class="small mt8">Add up to 20 wallet addresses that contain your digital assets.</p>
+      <div class="row mt12">
+        <input id="newWalletAddress" type="text" placeholder="0x... or alice.eth" style="background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;flex:1">
+        <button id="btnAddWallet" class="btn btn-secondary">Add Wallet</button>
+      </div>
+      <div id="walletsWrap" class="mt12">
+        <table id="tblWallets">
+          <thead><tr><th>Wallet Address</th><th>ENS</th><th class="right">Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Assets & Assignments</h2>
+      <div class="row mt8">
+        <select id="chainSelect" style="background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;margin-right:12px;">
+          <option value="ethereum">Ethereum</option>
+          <option value="solana">Solana</option>
+          <option value="bitcoin">Bitcoin</option>
+        </select>
+        <button id="btnLoadAssets" class="btn btn-secondary" disabled>Load Assets</button>
+        <button id="btnLoadDemo" class="btn btn-connect">Load Demo Data</button>
+        <div id="assetsError" class="small danger"></div>
+      </div>
+      <div id="assetsWrap" class="mt12 hidden">
+        <div class="small" id="chainInfo">ERC‑20 and NFTs shown for Ethereum Mainnet.</div>
+        <div class="mt12" id="tokensSection">
+          <div class="label" id="tokensLabel">ERC‑20 Tokens</div>
+          <table id="tblTokens"><thead><tr><th>Token</th><th>Balance</th><th>Assignments (Beneficiary / %)</th></tr></thead><tbody></tbody></table>
+        </div>
+        <div class="mt16" id="nftsSection">
+          <div class="label">NFTs</div>
+          <table id="tblNFTs"><thead><tr><th>Collection</th><th>Token ID</th><th>Assignments (Beneficiary / %)</th></tr></thead><tbody></tbody></table>
+        </div>
+        <div class="mt16 row">
+          <button id="btnSaveMap" class="btn btn-secondary">Save Assignments</button>
+          <span id="saveStatus" class="small"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Payment</h2>
+      <p class="small mt8">ENS holders get a discount.</p>
+      <div class="mt12 row">
+        <button id="btnPay" class="btn btn-pay" disabled>Pay &nbsp;<span id="payAmountLabel"></span> ETH <span id="payDiscount" class="strike hidden"></span></button>
+        <div id="payStatus" class="small">Awaiting connection…</div>
+      </div>
+      <div id="receiptBox" class="mt8 small hidden">
+        <div>Tx Hash: <a id="txhash" href="#" target="_blank"></a></div>
+        <div>Confirmed in block <span id="blocknum"></span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Generate & Print</h2>
+      <div class="mt12">
+        <button id="btnPrint" class="btn btn-print" disabled>Generate & Print</button>
+        <div id="printStatus" class="small mt8">Payment required to generate will</div>
+      </div>
+    </section>
+
+    <footer class="wrap small" style="text-align:center;margin-top:24px">© <span id="year"></span> LastWish.eth</footer>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
+
