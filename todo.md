@@ -1,80 +1,32 @@
-# Last Wish Platform - Development Todo
+# Cryptocurrency Wallet Connect Models Research Todo
 
-## Phase 1: Project Setup and Architecture Planning
-- [x] Create project directory structure
-- [x] Set up React frontend with Tailwind CSS
-- [x] Set up Flask backend with database configuration
-- [x] Create architecture documentation
-- [x] Define API endpoints and data models
-- [x] Set up development environment
+## Phase 1: Research wallet connect models and blockchain ecosystems
+- [x] Search for overview of wallet connection protocols
+- [x] Research WalletConnect protocol specifically
+- [x] Identify major blockchain networks and their wallet standards
+- [x] Research Web3 wallet integration methods
+- [x] Document wallet connection security models
+- [x] Research multi-chain wallet solutions
 
-## Phase 2: Backend Development and Database Setup
-- [x] Implement PostgreSQL database schema
-- [x] Set up MongoDB for session data
-- [x] Create user management APIs
-- [x] Implement authentication endpoints
-- [x] Set up encryption for data at rest
-- [x] Configure CORS and security middleware
+## Phase 2: Collect detailed data on wallet connect protocols and standards
+- [x] Collect data on specific wallet providers
+- [x] Research blockchain-specific connection methods
+- [x] Analyze supported features and capabilities
+- [x] Document technical specifications
 
-## Phase 3: Frontend Foundation and User Authentication
-- [ ] Create responsive UI layout with navigation
-- [ ] Implement user registration and login
-- [ ] Add SSO integration (Google, Apple)
-- [ ] Implement 2FA and account recovery
-- [ ] Create user dashboard
-- [ ] Add WCAG 2.1 accessibility features
+## Phase 3: Analyze and structure comparison data
+- [x] Create comparison framework
+- [x] Structure data for web presentation
+- [x] Define sorting and filtering criteria
 
-## Phase 4: Blockchain Wallet Integration
-- [ ] Integrate WalletConnect v2
-- [ ] Connect to Ethereum, Solana, Bitcoin APIs
-- [ ] Implement asset fetching and display
-- [ ] Add beneficiary assignment functionality
-- [ ] Implement sensitive data validation
-- [ ] Store wallet session data securely
-
-## Phase 5: Addendum Creation and PDF Generation
-- [ ] Create guided addendum form
-- [ ] Implement legal templates
-- [ ] Add PDF generation with jsPDF
-- [ ] Create memorandum template
-- [ ] Implement AWS S3 storage
-- [ ] Add notarization guide
-
-## Phase 6: Payment Processing Integration
-- [ ] Integrate CoinPayments/BitPay API
-- [ ] Implement pricing plans
-- [ ] Add real-time crypto conversion
-- [ ] Create payment flow
-- [ ] Implement refund logic
-- [ ] Add tax disclaimers
-
-## Phase 7: Notifications and Email Services
-- [ ] Set up SendGrid/AWS SES
-- [ ] Implement email templates
-- [ ] Add notification preferences
-- [ ] Create post-demise notification system
-- [ ] Implement cron job for scheduled notifications
-
-## Phase 8: Legal Guidance and Compliance Features
-- [ ] Create comprehensive FAQ
-- [ ] Add legal disclaimers
-- [ ] Implement secure storage guidance
-- [ ] Create state-specific notarization guide
-- [ ] Add GDPR/CCPA compliance features
-
-## Phase 9: Security, Performance, and Accessibility
-- [ ] Implement AES-256 encryption
-- [ ] Add TLS 1.3 configuration
-- [ ] Optimize performance with code splitting
-- [ ] Add error monitoring with Sentry
-- [ ] Complete accessibility testing
-- [ ] Implement backup strategy
-
-## Phase 10: Testing, Deployment, and Documentation
-- [ ] Write comprehensive tests
-- [ ] Set up CI/CD pipeline
-- [ ] Deploy to production environment
-- [ ] Create user documentation
-- [ ] Implement monitoring and analytics
-- [ ] Final security audit
-
+## Phase 4: Design and develop interactive web application
+- [x] Design UI/UX for comparison matrix
+- [x] Implement sortable table functionality
+- [x] Create responsive design## Phase 5: Implement wallet connection and asset viewing functionality
+- [x] Integrate wallet connection libraries
+- [x] Create wallet connection component
+- [x] Implement asset viewing functionality
+- [x] Add demo mode for## Phase 6: Deploy and present the comparison matrix online
+- [x] Deploy web application
+- [x] Test functionality
+- [x] Present to user
