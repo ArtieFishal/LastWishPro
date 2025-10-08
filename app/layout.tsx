@@ -1,5 +1,5 @@
-import './globals.css';
-import { Providers } from './lib/providers';
+import '../globals.css';
+import { Providers } from '../lib/providers';
 
 export const metadata = { 
   title: 'LastWish', 

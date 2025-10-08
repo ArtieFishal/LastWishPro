@@ -1,0 +1,396 @@
+{
+  "product": {
+    "name": "CryptoWill",
+    "tagline": "Simple Crypto Asset Discovery & Will Creation Tool",
+    "version": "1.0",
+    "date": "2025-01-09",
+    "status": "MVP Specification"
+  },
+  "vision": {
+    "statement": "Create a simple, effective tool that allows cryptocurrency holders to discover their assets across multiple wallets, designate beneficiaries, and generate basic legal documents for asset distribution upon death.",
+    "mission": "Provide crypto users with an accessible platform to document their digital assets and create simple wills, ensuring their cryptocurrency holdings can be properly inherited by designated beneficiaries."
+  },
+  "problemStatement": {
+    "painPoints": [
+      "Asset Discovery: Crypto holders often have assets spread across multiple wallets and blockchains",
+      "Proof of Ownership: Difficulty proving ownership of wallet addresses for legal purposes", 
+      "Beneficiary Management: No simple way to designate crypto beneficiaries with proper contact information",
+      "Legal Documentation: Lack of simple legal documents specifically for cryptocurrency inheritance",
+      "Fair Distribution: Complex percentage calculations for multiple beneficiaries"
+    ],
+    "solution": [
+      "Multi-blockchain wallet connection and asset discovery",
+      "Message signing for proof of ownership", 
+      "Automated beneficiary percentage allocation",
+      "Simple legal document generation and printing"
+    ]
+  },
+  "targetAudience": {
+    "primaryUsers": {
+      "description": "Crypto Holders: Individuals with cryptocurrency assets across multiple wallets",
+      "ageRange": "25-65 years old",
+      "technicalLevel": "Basic to intermediate crypto knowledge",
+      "assetRange": "Any amount of cryptocurrency holdings",
+      "primaryNeed": "Simple asset documentation and inheritance planning"
+    }
+  },
+  "goals": {
+    "primary": [
+      "Asset Discovery: Connect and discover assets across multiple blockchain wallets",
+      "Ownership Verification: Prove wallet ownership through message signing",
+      "Beneficiary Management: Simple beneficiary setup with contact information and ETH addresses", 
+      "Document Generation: Create printable legal documents for asset distribution",
+      "User Experience: Intuitive interface accessible to non-technical users"
+    ],
+    "successMetrics": {
+      "userRegistration": "1,000+ users in first 3 months",
+      "walletConnections": "Average 3+ wallets connected per user",
+      "documentGeneration": "80%+ of users generate a will document", 
+      "userSatisfaction": "4.0+ rating from user feedback"
+    }
+  },
+  "coreFeatures": {
+    "authentication": {
+      "loginOptions": [
+        "Social Login: Google, Twitter, Facebook integration",
+        "Blockchain Signature: Sign-in with Ethereum and other blockchain wallets",
+        "Traditional Auth: Email/password as fallback option"
+      ],
+      "security": [
+        "Multi-factor authentication support",
+        "Secure session management", 
+        "Account recovery options"
+      ]
+    },
+    "walletConnection": {
+      "supportedBlockchains": {
+        "ethereum": {
+          "symbol": "⟠",
+          "wallets": ["MetaMask", "WalletConnect", "Coinbase Wallet", "Rainbow", "Trust Wallet"]
+        },
+        "solana": {
+          "symbol": "◎", 
+          "wallets": ["Phantom", "Solflare", "Backpack", "Glow"]
+        },
+        "bitcoin": {
+          "symbol": "₿",
+          "wallets": ["Unisat", "Xverse", "Leather"]
+        },
+        "polygon": {
+          "symbol": "⬟",
+          "wallets": ["MetaMask", "WalletConnect compatible wallets"]
+        },
+        "cosmos": {
+          "symbol": "⚛",
+          "wallets": ["Keplr", "Cosmostation"]
+        },
+        "cardano": {
+          "symbol": "₳",
+          "wallets": ["Nami", "Eternl"]
+        }
+      },
+      "features": [
+        "Connection Interface: User-friendly wallet selection and connection",
+        "Asset Discovery: Automatic detection of tokens, NFTs, and native assets",
+        "Message Signing: Prove ownership by signing a message with each wallet",
+        "Address Storage: Securely store verified wallet addresses",
+        "Asset Listing: Display discovered assets without pricing (asset names and quantities only)"
+      ]
+    },
+    "beneficiaryManagement": {
+      "personalDetails": [
+        "Full legal name",
+        "Relationship to user",
+        "Phone number", 
+        "Email address",
+        "Physical address"
+      ],
+      "cryptoDetails": [
+        "Ethereum address (required - must resolve to valid ETH address)",
+        "Other blockchain addresses (optional)"
+      ],
+      "socialContact": [
+        "Twitter handle (optional)",
+        "Other social media (optional)",
+        "Emergency contact information"
+      ],
+      "percentageAllocation": {
+        "singleBeneficiary": "Automatically set to 100%",
+        "twoBeneficiaries": "Automatically split 50%/50%",
+        "multipleBeneficiaries": "Equal distribution (e.g., 3 people = 33.33% each)",
+        "manualOverride": "User can adjust percentages manually",
+        "validation": "Ensure total always equals 100%"
+      }
+    },
+    "documentGeneration": {
+      "template": {
+        "includes": [
+          "User Identification: Full legal name and signature",
+          "Asset Declaration: List of verified wallet addresses and discovered assets",
+          "Beneficiary Designation: Complete beneficiary information and allocation percentages",
+          "Proof of Ownership: Reference to signed messages proving wallet ownership", 
+          "Distribution Instructions: Clear instructions for asset transfer",
+          "Legal Disclaimers: Basic legal language and limitations"
+        ]
+      },
+      "features": [
+        "PDF Generation: Professional PDF format for printing",
+        "Print Optimization: Formatted for standard 8.5x11 paper",
+        "Digital Signatures: Support for digital signature integration",
+        "Version Control: Track document updates and changes"
+      ]
+    },
+    "userInterface": {
+      "dashboard": [
+        "Wallet Overview: Connected wallets and verification status",
+        "Asset Summary: Total discovered assets across all wallets",
+        "Beneficiary Status: Number of beneficiaries and allocation completeness",
+        "Document Status: Will completion and last updated date"
+      ],
+      "walletManagement": [
+        "Connection Interface: Easy wallet connection with clear instructions",
+        "Verification Status: Visual indicators for message signing completion",
+        "Asset Display: Clean list of discovered assets by wallet",
+        "Disconnection Options: Ability to remove wallet connections"
+      ],
+      "beneficiaryManagement": [
+        "Add/Edit Interface: Simple forms for beneficiary information",
+        "ETH Address Validation: Real-time validation of Ethereum addresses",
+        "Percentage Calculator: Visual percentage allocation with automatic calculations",
+        "Contact Verification: Optional email/phone verification"
+      ],
+      "documentGeneration": [
+        "Preview Mode: Preview document before final generation",
+        "Print Interface: Optimized printing options", 
+        "Download Options: PDF download and save functionality",
+        "Update Notifications: Alerts when asset changes require document updates"
+      ]
+    }
+  },
+  "technicalArchitecture": {
+    "frontend": {
+      "framework": "Next.js 15+ with TypeScript",
+      "uiLibrary": "Tailwind CSS + shadcn/ui components",
+      "stateManagement": "Zustand for global state",
+      "walletIntegration": "WagmiJS for Ethereum, Solana Wallet Adapter for Solana",
+      "pdfGeneration": "jsPDF or Puppeteer for document creation"
+    },
+    "backend": {
+      "runtime": "Node.js with Express",
+      "database": "PostgreSQL for user data and beneficiary information",
+      "authentication": "NextAuth.js with social providers + custom wallet auth",
+      "storage": "Encrypted storage for sensitive information",
+      "apiDesign": "RESTful APIs with proper error handling"
+    },
+    "blockchainIntegration": {
+      "multiChainSupport": "Separate providers for each blockchain",
+      "messageSigning": "Standard message signing protocols for ownership proof",
+      "addressValidation": "ENS resolution for Ethereum addresses",
+      "assetDiscovery": "Blockchain APIs and indexing services (Alchemy, Moralis)"
+    },
+    "security": {
+      "dataEncryption": "Encrypt sensitive data at rest",
+      "secureCommunication": "HTTPS/TLS for all communications",
+      "accessControl": "Role-based access with proper session management",
+      "privacy": "Minimal data collection, user-controlled data sharing"
+    }
+  },
+  "dataModels": {
+    "user": {
+      "id": "string",
+      "email": "string (optional)",
+      "socialId": "string (optional)", 
+      "walletAddress": "string (optional)",
+      "createdAt": "Date",
+      "lastLogin": "Date"
+    },
+    "connectedWallet": {
+      "id": "string",
+      "userId": "string",
+      "blockchain": "string",
+      "address": "string", 
+      "walletType": "string",
+      "isVerified": "boolean",
+      "signedMessage": "string (optional)",
+      "signedAt": "Date (optional)",
+      "discoveredAssets": "Asset[]"
+    },
+    "asset": {
+      "id": "string",
+      "walletId": "string",
+      "type": "native | token | nft",
+      "symbol": "string",
+      "name": "string",
+      "contractAddress": "string (optional)",
+      "tokenId": "string (optional)",
+      "balance": "string", 
+      "discoveredAt": "Date"
+    },
+    "beneficiary": {
+      "id": "string",
+      "userId": "string",
+      "fullName": "string",
+      "relationship": "string",
+      "ethAddress": "string",
+      "phoneNumber": "string",
+      "email": "string",
+      "physicalAddress": "string",
+      "twitterHandle": "string (optional)",
+      "allocationPercentage": "number",
+      "createdAt": "Date",
+      "updatedAt": "Date"
+    },
+    "willDocument": {
+      "id": "string",
+      "userId": "string", 
+      "version": "number",
+      "generatedAt": "Date",
+      "pdfPath": "string",
+      "isActive": "boolean",
+      "walletSnapshot": "ConnectedWallet[]",
+      "beneficiarySnapshot": "Beneficiary[]"
+    }
+  },
+  "userJourney": {
+    "steps": [
+      {
+        "step": 1,
+        "name": "Registration & Login",
+        "description": "Landing Page: Clear value proposition and call-to-action, Login Options: Social login, wallet connection, or email signup, Onboarding: Brief tutorial explaining the process"
+      },
+      {
+        "step": 2, 
+        "name": "Wallet Connection",
+        "description": "Wallet Selection: Choose from supported wallets by blockchain, Connection Process: Standard wallet connection flow, Message Signing: Sign a message to prove ownership, Asset Discovery: Automatic scanning and asset detection"
+      },
+      {
+        "step": 3,
+        "name": "Beneficiary Setup", 
+        "description": "Add Beneficiaries: Simple form for beneficiary information, ETH Address Input: Address validation with ENS support, Percentage Allocation: Automatic calculation with manual override, Contact Verification: Optional verification steps"
+      },
+      {
+        "step": 4,
+        "name": "Document Generation",
+        "description": "Review Information: Summary of wallets, assets, and beneficiaries, Generate Document: Create PDF will document, Preview & Print: Review document and print options, Save & Update: Save document and set up update notifications"
+      }
+    ],
+    "designPrinciples": [
+      "Simplicity: Clean, uncluttered interface",
+      "Security: Clear security indicators and explanations", 
+      "Accessibility: WCAG 2.1 compliance",
+      "Mobile Responsive: Works on all device sizes",
+      "Trust: Professional design that builds confidence"
+    ]
+  },
+  "businessModel": {
+    "mvpApproach": {
+      "freeTier": "Basic functionality for initial user acquisition",
+      "simplePricing": "Single paid tier for advanced features",
+      "noSubscriptions": "One-time payment model for simplicity"
+    },
+    "revenueStreams": {
+      "freeTier": {
+        "features": [
+          "Basic wallet connection (up to 3 wallets)",
+          "Simple beneficiary management (up to 3 beneficiaries)",
+          "Basic document generation",
+          "Standard support"
+        ]
+      },
+      "paidTier": {
+        "price": "$49 one-time",
+        "features": [
+          "Unlimited wallet connections",
+          "Unlimited beneficiaries", 
+          "Advanced document templates",
+          "Priority support",
+          "Document updates and notifications",
+          "Professional legal disclaimers"
+        ]
+      }
+    }
+  },
+  "developmentTimeline": {
+    "phase1": {
+      "duration": "Months 1-3",
+      "name": "Core MVP",
+      "month1": [
+        "Project setup and architecture",
+        "User authentication system",
+        "Basic UI/UX framework",
+        "Database schema and models"
+      ],
+      "month2": [
+        "Wallet connection system",
+        "Asset discovery implementation", 
+        "Message signing for ownership proof",
+        "Beneficiary management interface"
+      ],
+      "month3": [
+        "Legal document template creation",
+        "PDF generation system",
+        "Print optimization",
+        "Testing and bug fixes",
+        "MVP launch preparation"
+      ]
+    },
+    "phase2": {
+      "duration": "Months 4-6",
+      "name": "Enhancement", 
+      "tasks": [
+        "Additional blockchain support",
+        "Enhanced security features",
+        "Mobile optimization",
+        "User feedback integration",
+        "Performance optimization",
+        "Analytics and monitoring"
+      ]
+    }
+  },
+  "successMetrics": {
+    "userMetrics": {
+      "registrationRate": "Target 100+ new users per week",
+      "completionRate": "70%+ of users complete full will creation",
+      "walletConnections": "Average 3+ wallets connected per user",
+      "beneficiarySetup": "80%+ of users add at least one beneficiary",
+      "documentGeneration": "75%+ of users generate a will document"
+    },
+    "technicalMetrics": {
+      "platformUptime": "99.5%+ availability",
+      "pageLoadTime": "<3 seconds average",
+      "walletConnectionSuccess": "95%+ success rate", 
+      "documentGenerationSuccess": "98%+ success rate"
+    },
+    "businessMetrics": {
+      "userAcquisitionCost": "<$50 per user",
+      "conversionToPaid": "15%+ conversion rate",
+      "userSatisfaction": "4.0+ rating",
+      "supportResponse": "<24 hours average"
+    }
+  },
+  "risks": {
+    "technical": [
+      "Wallet Integration Failures: Multiple provider redundancy",
+      "Blockchain Network Issues: Graceful error handling and retries",
+      "Security Vulnerabilities: Regular security audits and testing"
+    ],
+    "legal": [
+      "Document Validity: Clear disclaimers and professional review recommendations",
+      "Regulatory Changes: Flexible architecture for compliance updates",
+      "Liability Issues: Comprehensive terms of service and limitations"
+    ],
+    "business": [
+      "Low Adoption: Strong user research and iterative development",
+      "Competition: Focus on simplicity and user experience differentiation", 
+      "Technical Complexity: Phased rollout with core features first"
+    ]
+  },
+  "conclusion": {
+    "summary": "CryptoWill represents a focused solution for cryptocurrency asset discovery and inheritance documentation. This MVP platform provides essential tools for crypto holders to document their assets, designate beneficiaries, and generate simple legal documents for asset distribution.",
+    "keySuccess": "The platform's success will depend on providing a secure, user-friendly interface that makes crypto inheritance planning accessible to everyday users. By focusing on core functionality - wallet connection, asset discovery, beneficiary management, and document generation - we can deliver immediate value while building a foundation for future enhancements.",
+    "status": "MVP Specification v1.0",
+    "targetLaunch": "3 months",
+    "nextReview": "Weekly development reviews"
+  }
+}
+
