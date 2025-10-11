@@ -1,0 +1,403 @@
+/* LastWish.eth Styles - Dark Theme Mobile-First Design */
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette */
+    --bg-primary: #000000;
+    --bg-secondary: #1c1c1e;
+    --bg-tertiary: #2c2c2e;
+    --bg-header: #3a3a3c;
+    --bg-nav: #2a2a2c;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #8e8e93;
+    --text-muted: #636366;
+    
+    --accent-blue: #007aff;
+    --accent-green: #34c759;
+    --accent-purple: #af52de;
+    --accent-red: #ff3b30;
+    
+    --border-color: #38383a;
+    
+    /* Spacing */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 25px;
+    --spacing-2xl: 30px;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-full: 25px;
+    
+    /* Typography */
+    --font-base: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-size-xs: 13px;
+    --font-size-sm: 15px;
+    --font-size-base: 17px;
+    --font-size-lg: 20px;
+    --font-size-xl: 24px;
+    --font-size-2xl: 28px;
+    --font-size-3xl: 32px;
+}
+
+body {
+    font-family: var(--font-base);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+p {
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+/* Cards */
+.card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.card-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+}
+
+.card-description {
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+    display: block;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+.form-label .required {
+    color: var(--accent-red);
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    background-color: var(--bg-tertiary);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 17px;
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    font-family: inherit;
+    -webkit-appearance: none;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.4;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    background-color: var(--accent-blue);
+    color: var(--text-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 17px 25px;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-appearance: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-secondary {
+    background-color: var(--text-muted);
+}
+
+.btn-success {
+    background-color: var(--accent-green);
+    color: var(--bg-primary);
+    font-weight: 700;
+}
+
+.btn-danger {
+    background-color: var(--accent-red);
+}
+
+.btn-purple {
+    background-color: var(--accent-purple);
+    font-weight: 700;
+}
+
+/* Button Groups */
+.btn-group {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.btn-group .btn {
+    flex: 1;
+}
+
+/* Input Groups */
+.input-group {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.input-group .form-input {
+    flex: 1;
+}
+
+/* Wallet Display */
+.wallet-display {
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 17px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+/* Tables */
+.table-header {
+    display: flex;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-row {
+    display: flex;
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+}
+
+.table-header > div,
+.table-row > div {
+    flex: 1;
+}
+
+/* Status Messages */
+.status-message {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-top: var(--spacing-md);
+}
+
+/* Network Badge */
+.network-badge {
+    display: inline-block;
+    background-color: var(--accent-green);
+    color: var(--bg-primary);
+    border-radius: var(--radius-full);
+    padding: 8px 16px;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+}
+
+/* Reset Button */
+.reset-btn {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: none;
+    border-radius: var(--radius-full);
+    padding: 8px 16px;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Made with Manus */
+.made-with {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-sm);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: var(--spacing-2xl) 0;
+    font-size: var(--font-size-sm);
+}
+
+/* Loading State */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    border-top-color: var(--accent-blue);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mt-xl { margin-top: var(--spacing-xl); }
+
+/* Responsive */
+@media (min-width: 768px) {
+    .container {
+        padding: var(--spacing-2xl);
+    }
+    
+    .card {
+        padding: var(--spacing-2xl);
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #000000;
+        --text-primary: #ffffff;
+    }
+}
+
+/* Accessibility */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus States */
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+a:focus {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+/* Disabled States */
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background-color: white;
+        color: black;
+    }
+    
+    .card {
+        background-color: white;
+        border: 1px solid #ccc;
+    }
+    
+    .no-print {
+        display: none;
+    }
+}
