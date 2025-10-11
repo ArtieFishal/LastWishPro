@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { MultiChainWalletProvider } from '../../MultiChainWalletProvider';
+import { SimpleWalletProvider } from '../../SimpleWalletProvider';
 
 // Dynamically import to avoid SSR issues with wallet libraries
 const LastWishMobile = dynamic(() => import('../../components/LastWishMobile'), {
@@ -15,8 +15,8 @@ const LastWishMobile = dynamic(() => import('../../components/LastWishMobile'), 
 
 export default function LastWishPage() {
   return (
-    <MultiChainWalletProvider>
+    <SimpleWalletProvider>
       <LastWishMobile />
-    </MultiChainWalletProvider>
+    </SimpleWalletProvider>
   );
 }
