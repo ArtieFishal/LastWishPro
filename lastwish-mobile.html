@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>LastWish.eth</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background-color: #3a3a3c;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Browser Header */
+        .browser-header {
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #2a2a2c;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .url-bar {
+            flex: 1;
+            background-color: #1c1c1e;
+            border-radius: 10px;
+            padding: 8px 15px;
+            text-align: center;
+            font-size: 15px;
+            color: #ffffff;
+        }
+
+        .browser-action {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 94px;
+            padding-bottom: 100px;
+            min-height: 100vh;
+            background-color: #000000;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        .app-header {
+            margin-bottom: 25px;
+        }
+
+        .app-title-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .app-title h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .app-subtitle {
+            color: #8e8e93;
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .reset-button {
+            background-color: #2c2c2e;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .network-badge {
+            background-color: #34c759;
+            color: #000000;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        /* Cards */
+        .card {
+            background-color: #1c1c1e;
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-description {
+            color: #8e8e93;
+            font-size: 17px;
+            line-height: 1.4;
+            margin-bottom: 25px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .form-label .required {
+            color: #ff3b30;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: #2c2c2e;
+            border: none;
+            border-radius: 12px;
+            padding: 17px;
+            font-size: 17px;
+            color: #ffffff;
+            -webkit-appearance: none;
+        }
+
+        .form-input::placeholder {
+            color: #636366;
+        }
+
+        .form-textarea {
+            width: 100%;
+            background-color: #2c2c2e;
+            border: none;
+            border-radius: 12px;
+            padding: 17px;
+            font-size: 17px;
+            color: #ffffff;
+            resize: none;
+            min-height: 120px;
+            font-family: inherit;
+            line-height: 1.4;
+            -webkit-appearance: none;
+        }
+
+        .form-textarea::placeholder {
+            color: #636366;
+        }
+
+        /* Wallet Display */
+        .wallet-display {
+            background-color: #2c2c2e;
+            border-radius: 12px;
+            padding: 17px;
+            font-size: 17px;
+            color: #8e8e93;
+            text-align: center;
+        }
+
+        /* Input Group */
+        .input-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-group .form-input {
+            flex: 1;
+        }
+
+        /* Buttons */
+        .button {
+            background-color: #007aff;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 17px 25px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            -webkit-appearance: none;
+        }
+
+        .button-secondary {
+            background-color: #636366;
+        }
+
+        .button-small {
+            padding: 12px 20px;
+            width: auto;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .button-group .button {
+            flex: 1;
+        }
+
+        /* Table */
+        .table-header {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #38383a;
+            color: #8e8e93;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-header > div {
+            flex: 1;
+        }
+
+        .table-row {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #38383a;
+            align-items: center;
+        }
+
+        .table-row > div {
+            flex: 1;
+            font-size: 17px;
+        }
+
+        /* Payment Button */
+        .payment-button {
+            background-color: #34c759;
+            color: #000000;
+            font-weight: 700;
+        }
+
+        /* Generate Button */
+        .generate-button {
+            background-color: #af52de;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer-text {
+            text-align: center;
+            color: #8e8e93;
+            font-size: 15px;
+            margin: 30px 0;
+        }
+
+        .made-with {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: #8e8e93;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background-color: #2a2a2c;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px;
+            z-index: 998;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .nav-button.add {
+            background-color: #636366;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-count {
+            background-color: #1c1c1e;
+            border: 2px solid #636366;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        /* Connect/Disconnect States */
+        .connect-button {
+            background-color: #007aff;
+        }
+
+        .sign-button {
+            background-color: #636366;
+        }
+
+        .disconnect-button {
+            background-color: #ff3b30;
+        }
+
+        /* Demo Data Button */
+        .demo-button {
+            background-color: #007aff;
+        }
+
+        /* Status Message */
+        .status-message {
+            text-align: center;
+            color: #8e8e93;
+            font-size: 17px;
+            margin-top: 15px;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span>8:29</span>
+            <span style="font-size: 12px;">◂</span>
+            <span style="font-weight: 400;">Messages</span>
+        </div>
+        <div class="status-right">
+            <span>•••••</span>
+            <span>📶</span>
+            <span>🔋</span>
+        </div>
+    </div>
+
+    <!-- Browser Header -->
+    <div class="browser-header">
+        <div class="browser-action">⚡</div>
+        <div class="url-bar">vxndzzgq.manus.space</div>
+        <div class="browser-action">↗</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- App Header -->
+            <div class="app-header">
+                <div class="app-title-row">
+                    <div class="app-title">
+                        <h1>LastWish.eth</h1>
+                    </div>
+                </div>
+                <div class="app-subtitle">"the decentralized solution"</div>
+                <div class="header-actions">
+                    <button class="reset-button" onclick="resetApp()">Reset App</button>
+                    <div class="network-badge">Ethereum Mainnet</div>
+                </div>
+            </div>
+
+            <!-- Section 1: Owner Information -->
+            <section id="section1" class="section active">
+                <!-- Owner Information Card -->
+                <div class="card">
+                    <h2 class="card-title">Owner Information</h2>
+                    <p class="card-description">Enter your full legal name and any special instructions for your will.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Full Legal Name <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="John Smith" value="John Smith">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Primary Wallet Address</label>
+                        <div class="wallet-display">Connected wallet ›</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Special Instructions (optional)</label>
+                        <textarea class="form-textarea" placeholder="Enter any special instructions for your executor regarding the management and distribution of your digital assets..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Additional Wallets Card -->
+                <div class="card">
+                    <h2 class="card-title">Additional Wallets</h2>
+                    <p class="card-description">Add up to 20 wallet addresses that contain your digital assets.</p>
+                    
+                    <div class="input-group">
+                        <input type="text" class="form-input" placeholder="0x... or alice.eth">
+                        <button class="button button-small">Add Wallet</button>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <div class="table-header">
+                            <div>Wallet Address</div>
+                            <div>ENS</div>
+                            <div>Actions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beneficiaries Preview Card -->
+                <div class="card">
+                    <h2 class="card-title">Beneficiaries</h2>
+                    <div class="made-with">
+                        <span>⚙</span>
+                        <span>Made with Manus</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Beneficiaries -->
+            <section id="section2" class="section">
+                <div class="card">
+                    <h2 class="card-title">Beneficiaries</h2>
+                    <p class="card-description">Wallet is optional — you can enter an ENS like alice.eth and we'll resolve it.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Name <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="Jane Doe" value="Jane Doe">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Wallet or ENS (optional)</label>
+                        <input type="text" class="form-input" placeholder="0x... or alice.eth" value="0x... or ali">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email (optional)</label>
+                        <input type="email" class="form-input" placeholder="jane@example.com" value="jane@exai">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Relationship (optional)</label>
+                        <input type="text" class="form-input" placeholder="Spouse, Child, Friend, etc." value="Spouse, Child, Ex">
+                    </div>
+                    
+                    <button class="button">Add Beneficiary</button>
+                    
+                    <div style="margin-top: 25px;">
+                        <div class="table-header">
+                            <div>Name</div>
+                            <div>Address</div>
+                            <div>ENS</div>
+                            <div>Email</div>
+                            <div>Relationship</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Wallet</h2>
+                    <p class="card-description">Connect, sign a session (off-chain), or disconnect. Reset App clears local data.</p>
+                    
+                    <div class="button-group">
+                        <button class="button connect-button">Connect</button>
+                        <button class="button sign-button">Sign Session</button>
+                        <button class="button disconnect-button">Disconnect</button>
+                    </div>
+                    
+                    <div class="made-with">
+                        <span>⚙</span>
+                        <span>Made with Manus</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Assets & Payment -->
+            <section id="section3" class="section">
+                <div class="card">
+                    <h2 class="card-title">Assets & Assignments</h2>
+                    <div class="button-group">
+                        <button class="button button-secondary">Load Assets</button>
+                        <button class="button demo-button">Load Demo Data</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Payment</h2>
+                    <p class="card-description">ENS holders get a discount.</p>
+                    <button class="button payment-button">Pay 0.0001 ETH</button>
+                    <p class="status-message">Awaiting connection...</p>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Generate & Print</h2>
+                    <button class="button generate-button">Generate & Print</button>
+                </div>
+
+                <div class="footer-text">
+                    <p>© 2025 LastWish</p>
+                    <div class="made-with">
+                        <span>⚙</span>
+                        <span>Made with Manus</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button class="nav-button" onclick="goBack()">←</button>
+        <button class="nav-button" onclick="goForward()">→</button>
+        <button class="nav-button add">+</button>
+        <button class="nav-button tab-count">10</button>
+        <button class="nav-button">•••</button>
+    </div>
+
+    <script>
+        let currentSection = 1;
+        const totalSections = 3;
+
+        function showSection(num) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show current section
+            const section = document.getElementById(`section${num}`);
+            if (section) {
+                section.classList.add('active');
+                currentSection = num;
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function goBack() {
+            if (currentSection > 1) {
+                showSection(currentSection - 1);
+            }
+        }
+
+        function goForward() {
+            if (currentSection < totalSections) {
+                showSection(currentSection + 1);
+            }
+        }
+
+        function resetApp() {
+            if (confirm('Reset app and clear all local data?')) {
+                // Clear all inputs
+                document.querySelectorAll('input, textarea').forEach(input => {
+                    if (input.type !== 'button' && input.type !== 'submit') {
+                        input.value = '';
+                    }
+                });
+                
+                // Reset to first section
+                showSection(1);
+                
+                // Clear local storage
+                localStorage.clear();
+            }
+        }
+
+        // Add wallet functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const addWalletButtons = document.querySelectorAll('.button-small');
+            addWalletButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('.form-input');
+                    if (input && input.value.trim()) {
+                        console.log('Adding wallet:', input.value);
+                        input.value = '';
+                    }
+                });
+            });
+
+            // Connect wallet simulation
+            const connectBtn = document.querySelector('.connect-button');
+            if (connectBtn) {
+                connectBtn.addEventListener('click', function() {
+                    this.textContent = 'Connecting...';
+                    setTimeout(() => {
+                        this.textContent = 'Connected';
+                        const walletDisplay = document.querySelector('.wallet-display');
+                        if (walletDisplay) {
+                            walletDisplay.textContent = '0x742d...8963';
+                        }
+                    }, 1500);
+                });
+            }
+        });
+
+        // Prevent zooming on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Prevent pull-to-refresh
+        document.body.addEventListener('touchmove', function(e) {
+            if (e.touches[0].clientY > 0 && window.scrollY === 0) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>

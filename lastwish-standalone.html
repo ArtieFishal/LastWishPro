@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LastWish.eth - The Decentralized Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2a2a2a;
+            --bg-card: #333333;
+            --text-primary: #ffffff;
+            --text-secondary: #999999;
+            --text-muted: #666666;
+            --accent-blue: #4a9eff;
+            --accent-green: #4ade80;
+            --accent-purple: #a78bfa;
+            --accent-red: #ef4444;
+            --border-color: #444444;
+            --input-bg: #1a1a1a;
+            --input-border: #444444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-icons svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-primary);
+        }
+
+        /* URL Bar */
+        .url-bar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 15px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 999;
+        }
+
+        .url-input {
+            flex: 1;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 25px;
+            padding: 8px 20px;
+            color: var(--text-primary);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 130px 20px 100px;
+            min-height: 100vh;
+        }
+
+        /* App Header */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .app-title {
+            flex: 1;
+        }
+
+        .app-title h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .app-title p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .reset-btn {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background-color: var(--bg-card);
+        }
+
+        .network-badge {
+            background-color: var(--accent-green);
+            color: var(--bg-primary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .form-group label span {
+            color: var(--accent-red);
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 15px;
+            padding: 15px 20px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        /* Wallet Input Group */
+        .wallet-input-group {
+            display: flex;
+            gap: 15px;
+            align-items: stretch;
+        }
+
+        .wallet-input-group .form-control {
+            flex: 1;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a8eef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 158, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-primary);
+        }
+
+        .btn-success {
+            background-color: var(--accent-green);
+            color: var(--bg-primary);
+        }
+
+        .btn-success:hover {
+            background-color: #3acd70;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+        }
+
+        .btn-danger {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-purple {
+            background-color: var(--accent-purple);
+            color: white;
+        }
+
+        .btn-purple:hover {
+            background-color: #9876ea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Button Group */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .button-group .btn {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            border-top: 1px solid var(--border-color);
+            z-index: 998;
+        }
+
+        .mobile-nav button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 5px 15px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .mobile-nav button.active {
+            color: var(--accent-blue);
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Wallet Connection States */
+        .wallet-connected {
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 15px;
+            padding: 15px 20px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            border-top-color: var(--accent-blue);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 120px 15px 120px;
+            }
+
+            .app-title h1 {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .card h2 {
+                font-size: 22px;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group .btn {
+                width: 100%;
+            }
+        }
+
+        /* Hide sections for demo */
+        #beneficiaries-section,
+        #assets-section,
+        #payment-section,
+        #generate-section {
+            display: none;
+        }
+
+        /* Made with Manus badge */
+        .made-with {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .made-with svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="status-bar">
+            <span>8:29</span>
+            <span>◀ Messages</span>
+        </div>
+        <div class="nav-icons">
+            <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M1 9l2-2v8l-2-2V9zm4-4l2-2v16l-2-2V5zm4 4l2-2v8l-2-2V9zm4-4l2-2v16l-2-2V5zm4 4l2-2v8l-2-2V9zm4-4l2-2v16l-2-2V5z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+        </div>
+    </div>
+
+    <!-- URL Bar -->
+    <div class="url-bar">
+        <button style="background: none; border: none; color: var(--text-primary); font-size: 20px; cursor: pointer;">✦</button>
+        <input type="text" class="url-input" value="vxndzzgq.manus.space" readonly>
+        <button style="background: none; border: none; color: var(--text-primary); font-size: 20px; cursor: pointer;">↗</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- App Header -->
+        <div class="app-header">
+            <div class="app-title">
+                <h1>LastWish.eth</h1>
+                <p>"the decentralized solution"</p>
+            </div>
+            <div class="header-buttons">
+                <button class="reset-btn" onclick="resetApp()">Reset App</button>
+                <div class="network-badge">Ethereum Mainnet</div>
+            </div>
+        </div>
+
+        <!-- Owner Information Section -->
+        <section id="owner-section" class="section active">
+            <div class="card">
+                <h2>Owner Information</h2>
+                <p>Enter your full legal name and any special instructions for your will.</p>
+
+                <div class="form-group">
+                    <label for="legal-name">Full Legal Name <span>*</span></label>
+                    <input type="text" id="legal-name" class="form-control" placeholder="John Smith" value="John Smith">
+                </div>
+
+                <div class="form-group">
+                    <label>Primary Wallet Address</label>
+                    <div class="wallet-connected">Connected wallet ⟩</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="special-instructions">Special Instructions (optional)</label>
+                    <textarea id="special-instructions" class="form-control" placeholder="Enter any special instructions for your executor regarding the management and distribution of your digital assets..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Additional Wallets</h2>
+                <p>Add up to 20 wallet addresses that contain your digital assets.</p>
+
+                <div class="wallet-input-group">
+                    <input type="text" class="form-control" placeholder="0x... or alice.eth">
+                    <button class="btn btn-primary">Add Wallet</button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Wallet Address</th>
+                                <th>ENS</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wallet-list">
+                            <!-- Wallets will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Beneficiaries</h2>
+                <div class="made-with">
+                    <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+                    <span>Made with Manus</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beneficiaries Section -->
+        <section id="beneficiaries-section" class="section">
+            <div class="card">
+                <h2>Beneficiaries</h2>
+                <p>Wallet is optional — you can enter an ENS like alice.eth and we'll resolve it.</p>
+
+                <div class="form-group">
+                    <label for="beneficiary-name">Name <span>*</span></label>
+                    <input type="text" id="beneficiary-name" class="form-control" placeholder="Jane Doe" value="Jane Doe">
+                </div>
+
+                <div class="form-group">
+                    <label for="beneficiary-wallet">Wallet or ENS (optional)</label>
+                    <input type="text" id="beneficiary-wallet" class="form-control" placeholder="0x... or alice.eth">
+                </div>
+
+                <div class="form-group">
+                    <label for="beneficiary-email">Email (optional)</label>
+                    <input type="email" id="beneficiary-email" class="form-control" placeholder="jane@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="beneficiary-relationship">Relationship (optional)</label>
+                    <input type="text" id="beneficiary-relationship" class="form-control" placeholder="Spouse, Child, Friend, etc.">
+                </div>
+
+                <button class="btn btn-primary btn-full">Add Beneficiary</button>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>ENS</th>
+                                <th>Email</th>
+                                <th>Relationship</th>
+                            </tr>
+                        </thead>
+                        <tbody id="beneficiary-list">
+                            <!-- Beneficiaries will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Wallet</h2>
+                <p>Connect, sign a session (off-chain), or disconnect. Reset App clears local data.</p>
+
+                <div class="button-group">
+                    <button class="btn btn-primary">Connect</button>
+                    <button class="btn btn-secondary">Sign Session</button>
+                    <button class="btn btn-danger">Disconnect</button>
+                </div>
+                
+                <div class="made-with">
+                    <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+                    <span>Made with Manus</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assets Section -->
+        <section id="assets-section" class="section">
+            <div class="card">
+                <h2>Assets & Assignments</h2>
+                <div class="button-group">
+                    <button class="btn btn-secondary">Load Assets</button>
+                    <button class="btn btn-primary">Load Demo Data</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Payment</h2>
+                <p>ENS holders get a discount.</p>
+                <button class="btn btn-success btn-full">Pay 0.0001 ETH</button>
+                <p style="text-align: center; margin-top: 15px; color: var(--text-secondary);">Awaiting connection...</p>
+            </div>
+
+            <div class="card">
+                <h2>Generate & Print</h2>
+                <button class="btn btn-purple btn-full">Generate & Print</button>
+            </div>
+
+            <div style="text-align: center; margin: 40px 0;">
+                <p style="color: var(--text-secondary);">© 2025 LastWish</p>
+                <div class="made-with">
+                    <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+                    <span>Made with Manus</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <button onclick="navigateToSection('back')">←</button>
+        <button onclick="navigateToSection('forward')">→</button>
+        <button onclick="openAddTab()">+</button>
+        <button onclick="showTabs()">10</button>
+        <button onclick="showMenu()">•••</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 LastWish.eth</p>
+    </div>
+
+    <script>
+        // Current section tracking
+        let currentSection = 'owner';
+        const sections = ['owner', 'beneficiaries', 'assets'];
+        let sectionIndex = 0;
+
+        // Navigation functions
+        function navigateToSection(direction) {
+            if (direction === 'forward' && sectionIndex < sections.length - 1) {
+                sectionIndex++;
+            } else if (direction === 'back' && sectionIndex > 0) {
+                sectionIndex--;
+            }
+            showSection(sections[sectionIndex]);
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(`${sectionName}-section`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                currentSection = sectionName;
+                sectionIndex = sections.indexOf(sectionName);
+            }
+        }
+
+        // Reset app function
+        function resetApp() {
+            if (confirm('Are you sure you want to reset the app? This will clear all local data.')) {
+                // Clear all form inputs
+                document.querySelectorAll('input, textarea').forEach(input => {
+                    if (input.type !== 'button' && input.type !== 'submit') {
+                        input.value = '';
+                    }
+                });
+                
+                // Clear any stored data
+                localStorage.clear();
+                
+                // Reset to first section
+                sectionIndex = 0;
+                showSection('owner');
+                
+                alert('App has been reset successfully!');
+            }
+        }
+
+        // Placeholder functions for mobile nav
+        function openAddTab() {
+            alert('Add new tab functionality');
+        }
+
+        function showTabs() {
+            alert('Show all tabs functionality');
+        }
+
+        function showMenu() {
+            alert('Menu functionality');
+        }
+
+        // Add wallet functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const addWalletBtn = document.querySelector('.btn-primary');
+            if (addWalletBtn) {
+                addWalletBtn.addEventListener('click', function() {
+                    const walletInput = document.querySelector('.wallet-input-group input');
+                    if (walletInput && walletInput.value.trim()) {
+                        addWalletToList(walletInput.value.trim());
+                        walletInput.value = '';
+                    }
+                });
+            }
+        });
+
+        function addWalletToList(address) {
+            const walletList = document.getElementById('wallet-list');
+            if (walletList) {
+                const row = document.createElement('tr');
+                const ens = address.includes('.eth') ? address : '-';
+                const displayAddress = address.includes('.eth') ? 'Resolving...' : 
+                    address.substring(0, 6) + '...' + address.substring(address.length - 4);
+                
+                row.innerHTML = `
+                    <td>${displayAddress}</td>
+                    <td>${ens}</td>
+                    <td><button onclick="removeWallet(this)" style="background: none; border: none; color: var(--accent-red); cursor: pointer;">Remove</button></td>
+                `;
+                walletList.appendChild(row);
+            }
+        }
+
+        function removeWallet(button) {
+            button.closest('tr').remove();
+        }
+
+        // Simulate wallet connection
+        const connectBtns = document.querySelectorAll('.btn-primary');
+        connectBtns.forEach(btn => {
+            if (btn.textContent === 'Connect') {
+                btn.addEventListener('click', function() {
+                    this.textContent = 'Connecting...';
+                    this.innerHTML = '<span class="spinner"></span> Connecting...';
+                    
+                    setTimeout(() => {
+                        this.textContent = 'Connected';
+                        this.classList.remove('btn-primary');
+                        this.classList.add('btn-success');
+                        
+                        // Update wallet display
+                        const walletConnected = document.querySelector('.wallet-connected');
+                        if (walletConnected) {
+                            walletConnected.textContent = '0x742d...8963';
+                        }
+                    }, 2000);
+                });
+            }
+        });
+
+        // Add smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Handle form submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
